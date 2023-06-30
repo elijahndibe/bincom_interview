@@ -53,7 +53,7 @@ $('select[name="state_id"]').on('change', function(){
                         $('select[name="pu_id"]').html('');
                         var d =$('select[name="pu_id"]').empty();
                         $.each(data, function(key, value){
-                            $('select[name="pu_id"]').append('<option value="'+ value.polling_unit_id + '">' + value.polling_unit_name + '</option>');
+                            $('select[name="pu_id"]').append('<option value="'+ value.uniqueid + '">' + value.polling_unit_name + '</option>');
                      
                         });
                     },

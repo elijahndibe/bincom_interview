@@ -51,7 +51,8 @@ if (isset($_SERVER['REQUEST_URI'])) {
 
             if ($uri === '/pu-results/ajax/'. $id) {
 
-                $sql = $conn->query("SELECT * FROM `announced_pu_results` WHERE `polling_unit_uniqueid` = $id");
+                $sql = $conn->query("SELECT * FROM `announced_pu_results` WHERE `polling_unit_uniqueid` = $id
+                ORDER BY announced_pu_results.polling_unit_uniqueid ASC");
                 $pu_results = array();
                 if ($sql->num_rows == 0) {
                     $pu_results[] = 'No result found';
@@ -84,12 +85,13 @@ if (isset($_SERVER['REQUEST_URI'])) {
                         $result2 = $sql2->get_result();
 
                         while ($row2 = $result2->fetch_assoc()) {
-                            $pu_id = $row2['polling_unit_id'];
+                            $pu_id = $row2['uniqueid'];
                             
                             $sql3 = $conn->prepare("SELECT party_abbreviation, SUM(announced_pu_results.party_score) AS total_score 
                             FROM announced_pu_results
                             WHERE polling_unit_uniqueid = ?
-                            GROUP BY party_abbreviation");
+                            GROUP BY party_abbreviation
+                            ORDER BY announced_pu_results.polling_unit_uniqueid ASC");
                             $sql3->bind_param("s", $pu_id);
                             $sql3->execute();
                             $result3 = $sql3->get_result();
